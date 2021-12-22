@@ -7,10 +7,10 @@ import numpy as np
 
 import numpy as np
 import cv2
-from keras.models import Sequential
+from tensorflow.keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from keras.layers import MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -31,24 +31,26 @@ emotion_model.add(Flatten())
 emotion_model.add(Dense(1024, activation='relu'))
 emotion_model.add(Dropout(0.5))
 emotion_model.add(Dense(7, activation='softmax'))
-emotion_model.load_weights('model.h5')
+emotion_model.load_weights('emotion_model.h5')
 
 cv2.ocl.setUseOpenCL(False)
 
 emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy   ", 4: "  Neutral  ", 5: "    Sad    ", 6: "Surprised"}
 
 
-emoji_dist={0:"./emojis/angry.png",2:"./emojis/disgusted.png",2:"./emojis/fearful.png",3:"./emojis/happy.png",4:"./emojis/neutral.png",5:"./emojis/sad.png",6:"./emojis/surpriced.png"}
+emoji_dist={0:"../emojis/angry.png",2:"../emojis/disgusted.png",2:"../emojis/fearful.png",3:"../emojis/happy.png",4:"../emojis/neutral.png",5:"../emojis/sad.png",6:"../emojis/surpriced.png"}
 
 global last_frame1                                    
 last_frame1 = np.zeros((480, 640, 3), dtype=np.uint8)
 global cap1
 show_text=[0]
+# --------------------------------------
 def show_vid():      
     cap1 = cv2.VideoCapture(0)                                 
     if not cap1.isOpened():                             
         print("cant open the camera1")
     flag1, frame1 = cap1.read()
+
     frame1 = cv2.resize(frame1,(600,500))
 
     bounding_box = cv2.CascadeClassifier('C:/Users/islam/AppData/Local/Programs/Python/Python37/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml')
@@ -78,7 +80,7 @@ def show_vid():
     if cv2.waitKey(1) & 0xFF == ord('q'):
         exit()
 
-
+# -------------------------------------------
 def show_vid2():
     frame2=cv2.imread(emoji_dist[show_text[0]])
     pic2=cv2.cvtColor(frame2,cv2.COLOR_BGR2RGB)
@@ -91,8 +93,8 @@ def show_vid2():
     lmain2.after(10, show_vid2)
 
 if __name__ == '__main__':
-    root=tk.Tk()   
-    img = ImageTk.PhotoImage(Image.open("logo.png"))
+    root=tk.Tk()
+    img = ImageTk.PhotoImage(Image.open("../logo.png"))
     heading = Label(root,image=img,bg='black')
     
     heading.pack() 
